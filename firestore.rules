@@ -1,0 +1,51 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // 0. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isSignedIn() { return request.auth != null; }
+    function isOwner(userId) { return isSignedIn() && request.auth.uid == userId; }
+
+    // 1. User Profiles
+    match /users/{userId} {
+      function isValidUser(data) {
+        return data.uid == request.auth.uid 
+          && data.username is string && data.username.size() >= 3 && data.username.size() <= 32
+          && (data.avatarUrl == null || (data.avatarUrl is string && data.avatarUrl.size() <= 512))
+          && (data.bio == null || (data.bio is string && data.bio.size() <= 500));
+      }
+
+      allow read: if isSignedIn();
+      allow create: if isOwner(userId) && isValidUser(incoming()) 
+                     && incoming().keys().hasAll(['uid', 'username']);
+      allow update: if isOwner(userId) && isValidUser(incoming())
+                     && incoming().diff(existing()).affectedKeys().hasOnly(['username', 'avatarUrl', 'bio']);
+    }
+
+    // 2. Leaderboards
+    match /leaderboards/{gameId}/scores/{scoreId} {
+      function isValidScore(data) {
+        return data.userId == request.auth.uid
+          && data.score is number && data.score >= 0
+          && data.gameId == gameId
+          && data.username is string
+          && data.timestamp == request.time;
+      }
+
+      allow list: if true; // Publicly viewable
+      allow get: if true;
+      allow create: if isSignedIn() && isValidId(gameId) && isValidScore(incoming());
+      // Scores are immutable and cannot be deleted or modified by users
+      allow update, delete: if false;
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Public profile for game players",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "username": { "type": "string", "description": "Display name" },
+        "avatarUrl": { "type": "string", "description": "Profile picture URL" },
+        "totalScore": { "type": "number", "description": "Aggregated score across all games" },
+        "bio": { "type": "string", "description": "User biography" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "username"]
+    },
+    "Score": {
+      "title": "Game Score",
+      "description": "Individually submitted game scores",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Reference to User UID" },
+        "username": { "type": "string", "description": "Username at time of submission" },
+        "gameId": { "type": "string", "description": "Game identifier from games.json" },
+        "score": { "type": "number", "description": "Numeric score value" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "gameId", "score", "username", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Individual user profile documents"
+    },
+    "/leaderboards/{gameId}/scores/{scoreId}": {
+      "schema": "Score",
+      "description": "High scores collection partitioned by game"
+    }
+  }
+}

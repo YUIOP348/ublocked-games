@@ -1,0 +1,40 @@
+[
+  {
+    "id": "2048",
+    "name": "2048",
+
+    "iframeUrl": "https://play2048.co/",
+    "thumbnail": "https://images.unsplash.com/photo-1614028674026-a65e31bfd27c?q=80&w=400&h=300&fit=crop",
+    "category": "Puzzle"
+  },
+  {
+    "id": "hextris",
+    "name": "Hextris",
+
+    "iframeUrl": "https://hextris.io/",
+    "category": "Arcade"
+  },
+  {
+    "id": "slope",
+    "name": "Slope",
+,
+    "iframeUrl": "https://kdata1.com/2020/05/slope/",
+    "thumbnail": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=400&h=300&fit=crop",
+    "category": "Arcade"
+  },
+  {
+    "id": "eggy-car",
+    "name": "Eggy Car",
+    "iframeUrl": "https://kdata1.com/2020/12/eggy-car/",
+    "thumbnail": "https://images.unsplash.com/photo-1551103782-8ab07afd45c1?q=80&w=400&h=300&fit=crop",
+    "category": "Racing"
+  },
+  {
+    "id": "moto-x3m",
+    "name": "Moto X3M",
+
+    "iframeUrl": "https://images-opensocial.googleusercontent.com/gadgets/proxy?container=ig&url=https://h5-games.io/moto-x3m/",
+    "thumbnail": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&w=400&h=300&fit=crop",
+    "category": "Racing"
+  }
+]
